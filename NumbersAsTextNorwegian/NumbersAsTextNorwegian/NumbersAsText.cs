@@ -6,7 +6,7 @@ namespace NumbersAsTextNorwegian
     public static class NumbersAsText
     {
 
-        public static IDictionary<int, string> Numbers = new Dictionary<int, string>()
+        private static IDictionary<int, string> Numbers = new Dictionary<int, string>()
         {
             {1, "en"},
             {2, "to"},
@@ -37,8 +37,6 @@ namespace NumbersAsTextNorwegian
             {90, "nitti"},
         };
 
-
-
         public static string AsText(int number)
         {
             return ConvertNumberToText(number).Trim();
@@ -54,7 +52,10 @@ namespace NumbersAsTextNorwegian
                 return string.IsNullOrWhiteSpace(prefix) ?  Numbers[number] : $"{prefix} {Numbers[number]}";
 
             if (number < 100)
-                return $"{(string.IsNullOrWhiteSpace(prefix) ? string.Empty : prefix)} {Numbers[number -(number%10)] }" + ConvertNumberToText(number % 10);
+            {
+                var tens = number - (number % 10);
+                return $"{(string.IsNullOrWhiteSpace(prefix) ? string.Empty : prefix)} {Numbers[tens] }" + ConvertNumberToText(number % 10);
+            }
 
             if (number < 1000)
                 return $"{GetNumberOrDefault(number, 100) } hundre " + ConvertNumberToText(number % 100, "og");
@@ -66,8 +67,7 @@ namespace NumbersAsTextNorwegian
             {
                 var tens = (number - (number % 10000)) / 1000;
                 var includeSuffix = number % 10000 < 1000;
-
-                return $"{(string.IsNullOrWhiteSpace(prefix) ? string.Empty : prefix)} {Numbers[tens] }{(includeSuffix ? " tusen " : string.Empty)}" + ConvertNumberToText(number % 10000);
+                return $"{(string.IsNullOrWhiteSpace(prefix) ? string.Empty : prefix)} {Numbers[tens] }{(includeSuffix ? " tusen " : string.Empty)}" + ConvertNumberToText(number % 10000, includeSuffix ? "og": "");
             }
 
             if (number < 1000000)
