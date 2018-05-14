@@ -6,7 +6,7 @@ namespace NumbersAsTextNorwegian
     public static class NumbersAsText
     {
 
-        private static IDictionary<int, string> Numbers = new Dictionary<int, string>()
+        private static readonly IDictionary<int, string> Numbers = new Dictionary<int, string>()
         {
             {1, "en"},
             {2, "to"},
@@ -42,7 +42,7 @@ namespace NumbersAsTextNorwegian
             return ConvertNumberToText(number).Trim();
         }
 
-        public static string ConvertNumberToText(int number, string prefix = "")
+        private static string ConvertNumberToText(int number, string prefix = "")
         {
 
             if (number == 0)
